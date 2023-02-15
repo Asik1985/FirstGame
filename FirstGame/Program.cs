@@ -6,6 +6,7 @@ class Program
 
     static void Main()
     {
+        
         while (_game.GetWinner() == Winner.None)
         {
             PrintGame();
@@ -32,6 +33,7 @@ class Program
 
     static void PrintGame()
     {
+        Console.WriteLine("Игра виселица");
         Console.WriteLine("GUESS THE WORD");
         Console.WriteLine(_game.result);
     }
