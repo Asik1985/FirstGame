@@ -1,41 +1,100 @@
 ﻿namespace FirstGame;
 
+
 class Program
 {
     private static Game _game = new Game();
-
     static void Main()
     {
         
         while (_game.GetWinner() == Winner.None)
         {
             PrintGame();
-            char name = char.Parse(Console.ReadLine());
-            _game.Turn(name);
-            Console.WriteLine(_game.counter);
+            Console.WriteLine("Введите букву: ");
+            string? letString = Console.ReadLine();
+            if (letString != "" && letString is not null)
+            {
+                Char letChar = Char.Parse(letString);
+                _game.Turn(letChar);
+            }
         }
         PrintGame();
-        Winner winner = _game.GetWinner();
-        if (winner == Winner.None)
-        {
-            Console.WriteLine("DRAW");
-        }
-        else if (winner == Winner.Win)
-        {
-            Console.WriteLine("YOU WON");
-        }
-        else
-        {
-            Console.WriteLine("YOU LOSE");
-        }
+        Console.WriteLine(_game.GetWinner() == Winner.Win ? "Победа" : $"Проиграл, слово было {_game.Word}");
         Console.ReadKey(true);
     }
 
     static void PrintGame()
     {
-        Console.WriteLine("Игра виселица");
-        Console.WriteLine("GUESS THE WORD");
-        Console.WriteLine(_game.result);
+        Console.Clear();
+        Console.WriteLine($"Слово из {_game.Word.Length} букв, осталось ходов: {_game.Counter}");
+        Console.WriteLine(_game.Answer);
+        string output = "";
+        switch (_game.Counter)
+        {
+            case 6:
+                output = @"
+  ____   
+ |    
+ |
+ |
+ |
+_| ___  ";
+                break;
+            case 5:
+                output = @"
+  ____   
+ |    |
+ |
+ |
+ |
+_| ___  ";
+                break;
+            case 4:
+                output = @"
+  ____   
+ |    |
+ |    O
+ |
+ |
+_| ___  ";
+                break;
+            case 3:
+                output = @"
+  ____   
+ |    |
+ |   _O_
+ |
+ |
+_| ___  ";
+                break;
+            case 2:
+                output = @"
+  ____   
+ |    |
+ |   _O_
+ |    |
+ |
+_| ___  ";
+                break;
+            case 1:
+                output = @"
+  ____   
+ |    |
+ |   _O_
+ |    |
+ |   /
+_| ___  ";
+                break;
+            case 0:
+                output = @"
+  ____   
+ |    |
+ |   _O_
+ |    |
+ |   / \
+_| ___  ";
+                break;
+        }
+        Console.WriteLine(output);
     }
 }
-

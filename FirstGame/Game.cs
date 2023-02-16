@@ -3,77 +3,62 @@ public enum Winner
 {
     None,
     Win,
-    Lose
+    Louse
 }
-
-//Тестовая отправка с изменениями
 class Game
 {
-    public string[] allwords { get; set; }
-    public string word { get; set; }
-    public string result { get; set; }
-    public int counter { get; set; }
+    public string Word { get; set; }
+    public string Answer { get; set; }
+    public int Counter { get; set; }
+
     public Game()
     {
-        allwords = GetAllWords();
+        string[] words = File.ReadAllLines("words.txt");
         Random rnd = new Random();
-        int temp = rnd.Next(allwords.Length);
-        word = allwords[temp];
-        foreach (var item in word)
+        int randomIndex = rnd.Next(words.Length - 1);
+        Word = words[randomIndex];
+
+        for (int i = 0; i < Word.Length; i++)
         {
-            result += "X";
+            Answer += '*';
         }
-        counter = 6;
+
+        Counter = 6;
     }
-    public string[] GetAllWords()
+
+    public void Turn(char letChar)
     {
-        return File.ReadAllLines("words.txt");
-    }
-    public void Turn(char letter)
-    {
-        string tempresult = " ";
-        int match = 0;
-        for (int i = 0; i < word.Length; i++)
+        string result = String.Empty;
+        bool yesChar = true;
+        for (int i = 0; i < Word.Length; i++)
         {
-            if (letter == word[i])
+            if (Word[i] == letChar)
             {
-                tempresult += word[i];
-                match++;
+                result += Word[i];
+                yesChar = false;
             }
             else
             {
-                if (result[i] == 'X')
-                {
-                    tempresult += "X";
-                }
-                else
-                {
-                    tempresult += result[i];
-                }
+                result += Answer[i] != '*' ? Answer[i] : '*';
             }
+
         }
-        if (match == 0)
+        if (yesChar)
         {
-            counter--;
+            Counter--;
         }
-        result = tempresult;
+        Answer = result;
     }
     public Winner GetWinner()
     {
-        if (word == result)
+        if (Word == Answer)
         {
             return Winner.Win;
         }
-        else
+        if (Counter == 0)
         {
-            if (counter == 0)
-            {
-                return Winner.Lose;
-            }
-            else
-            {
-                return Winner.None;
-            }
+            return Winner.Louse;
         }
+        return Winner.None;
     }
 }
